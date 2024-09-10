@@ -1,45 +1,77 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import '@testing-library/jest-dom';
 
 import App from "../App";
 
-// Pepperoni checkbox
-test("checkbox is initially unchecked", () => {
-  render(<App />);
+// Your tests here
+test("displays a top-level heading with the text 'Hi, I'm ________'", () => {
 
-  const addPepperoni = screen.getByRole("checkbox", { name: /add pepperoni/i });
+    render(<App />);
 
-  expect(addPepperoni).not.toBeChecked();
+    const topLevelHeading = screen.getByRole("heading", {
+        name: /hi, i'm/i,
+        exact: false,
+        level: 1,
+    });
+
+    expect(topLevelHeading).toBeInTheDocument();
 });
 
-test("checkbox appears as checked when user clicks it", () => {
-  render(<App />);
+test("displays an image with the text describing the content of the image", () => {
 
-  const addPepperoni = screen.getByRole("checkbox", { name: /add pepperoni/i });
+    render(<App />);
 
-  userEvent.click(addPepperoni);
-  expect(addPepperoni).toBeChecked();
+    const image = document.querySelector("img");
+    const altText = image.getAttribute("alt");
+    expect(altText).toBeTruthy();
 });
 
-test("checkbox appears as unchecked when user clicks a second time", () => {
-  render(<App />);
+test("displays a 2nd level heading with the text 'About Me'", () => {
 
-  const addPepperoni = screen.getByRole("checkbox", { name: /add pepperoni/i });
+    render(<App />);
 
-  userEvent.click(addPepperoni);
+    const secondLevelHeading = screen.getByRole("heading", {
+        name: /About Me/i,
+        exact: false,
+        level: 2,
+    });
 
-  expect(addPepperoni).toBeChecked();
-
-  userEvent.click(addPepperoni);
-
-  expect(addPepperoni).not.toBeChecked();
+    expect(secondLevelHeading).toBeInTheDocument();
 });
 
-// Size select element
 
-// "Your Selection" text
+test("displays paragraph", () => {
 
-// "Contact Info" text box
+    render(<App />);
 
-// Submit Order button
+    const biographyParagraph = screen.getByText("I am", {
+        name: /I am/i,
+        exact: false,
+    });
+
+    expect(biographyParagraph).toBeInTheDocument();
+});
+
+test("displays link to LinkedIn", () => {
+
+    render(<App />);
+
+    const linkedInLink = screen.getByRole("link", {
+        name: /LinkedIn/i,
+        exact: false,
+    });
+
+    expect(linkedInLink).toBeInTheDocument();
+})
+
+test("displays link to GitHub", () => {
+
+    render(<App />);
+
+    const githubLink = screen.getByRole("link", {
+        name: /GitHub/i,
+        exact: false,
+    });
+
+    expect(githubLink).toBeInTheDocument();
+})
